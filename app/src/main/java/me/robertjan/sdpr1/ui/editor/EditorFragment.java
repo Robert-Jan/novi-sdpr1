@@ -1,4 +1,4 @@
-package me.robertjan.sdpr1.ui.dashboard;
+package me.robertjan.sdpr1.ui.editor;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import me.robertjan.sdpr1.R;
 
-public class DashboardFragment extends Fragment {
+public class EditorFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private EditorViewModel editorViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(this, new Observer<String>() {
+        editorViewModel =
+                ViewModelProviders.of(this).get(EditorViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_editor, container, false);
+        final TextView textView = root.findViewById(R.id.text_home);
+        editorViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

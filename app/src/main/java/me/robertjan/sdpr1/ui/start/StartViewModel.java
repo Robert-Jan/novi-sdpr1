@@ -1,16 +1,16 @@
-package me.robertjan.sdpr1.ui.dashboard;
+package me.robertjan.sdpr1.ui.start;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class StartViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public StartViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is start fragment");
     }
 
     public LiveData<String> getText() {

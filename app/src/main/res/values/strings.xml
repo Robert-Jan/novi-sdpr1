@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Software Development Praktijk 1</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name">Medewerker van de maand</string>
+    <string name="title_start">Start</string>
+    <string name="title_editor">Editor</string>
+    <string name="title_share">Share</string>
 </resources>
