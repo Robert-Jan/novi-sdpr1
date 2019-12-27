@@ -11,7 +11,7 @@ public abstract class Placable {
     public Integer locationY;
 
     public void setZoom(Integer zoom) {
-
+        this.zoom = zoom;
     }
 
     public void setLocation(Integer x, Integer y) {

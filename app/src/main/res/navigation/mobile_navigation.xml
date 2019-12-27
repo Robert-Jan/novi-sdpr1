@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_start"
-        android:name="me.robertjan.sdpr1.ui.start.StartFragment"
+        android:name="me.robertjan.sdpr1.views.StartFragment"
         android:label="@string/title_start"
         tools:layout="@layout/fragment_start" />
 
     <fragment
         android:id="@+id/navigation_editor"
-        android:name="me.robertjan.sdpr1.ui.editor.EditorFragment"
+        android:name="me.robertjan.sdpr1.views.EditorFragment"
         android:label="@string/title_editor"
         tools:layout="@layout/fragment_editor" />
 
     <fragment
         android:id="@+id/navigation_share"
-        android:name="me.robertjan.sdpr1.ui.share.ShareFragment"
+        android:name="me.robertjan.sdpr1.views.ShareFragment"
         android:label="@string/title_share"
         tools:layout="@layout/fragment_share" />
 </navigation>
