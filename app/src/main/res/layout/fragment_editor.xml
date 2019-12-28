@@ -17,33 +17,47 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        style="?android:attr/buttonBarStyle">
 
         <Button
             android:id="@+id/add_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/add_text" />
+            android:text="@string/add_text"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/add_sticker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/add_sticker" />
+            android:text="@string/add_sticker"
+            style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <RelativeLayout
+        android:id="@+id/image"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:contentDescription="@string/title_editor"
-        app:layout_constraintTop_toBottomOf="@+id/buttonGroup"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/person"
-        tools:srcCompat="@drawable/person" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonGroup">
+
+        <ImageView
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/title_editor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:srcCompat="@drawable/person"
+            tools:srcCompat="@drawable/person" />
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

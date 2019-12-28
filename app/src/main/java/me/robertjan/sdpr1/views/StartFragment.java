@@ -1,6 +1,7 @@
 package me.robertjan.sdpr1.views;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +28,10 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_camera:
-
+                Log.d("Start", "Open camera");
                 break;
             case R.id.button_gallery:
-
+                Log.d("Start", "Open gallery");
                 break;
         }
     }
