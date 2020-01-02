@@ -1,11 +1,17 @@
 package me.robertjan.sdpr1.models;
 
+import me.robertjan.sdpr1.R;
+
 public class Sticker extends Placable {
 
-    public String name;
+    public Integer drawableId;
 
-    public void setName(String name) {
-        this.name = name;
+    public Sticker(Integer id) {
+        this.id = id;
+    }
+
+    public void setDrawable(Integer id) {
+        this.drawableId = id;
     }
 
     public void getSticker() {

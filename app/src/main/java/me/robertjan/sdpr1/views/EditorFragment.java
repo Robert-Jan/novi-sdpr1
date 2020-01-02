@@ -14,11 +14,21 @@ import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
+
 import me.robertjan.sdpr1.R;
+import me.robertjan.sdpr1.controllers.MainActivity;
+import me.robertjan.sdpr1.models.Photo;
+import me.robertjan.sdpr1.models.Placable;
+import me.robertjan.sdpr1.models.Sticker;
+import me.robertjan.sdpr1.models.Text;
 
 public class EditorFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
-    private View selected;
+    private Photo photo;
+
+    private Placable selected;
 
     private RelativeLayout canvas;
 
@@ -28,6 +38,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editor, container, false);
+        this.photo = ((MainActivity) Objects.requireNonNull(getActivity())).getPhoto();
 
         this.canvas = view.findViewById(R.id.canvas);
         this.canvas.setOnClickListener(this);
@@ -44,25 +55,42 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         Button addStickerButton = view.findViewById(R.id.add_sticker);
         addStickerButton.setOnClickListener(this);
 
+        for (Placable placable : this.photo.placables) {
+            if (placable instanceof Sticker) {
+                this.addStickerView((Sticker) placable);
+            } else if (placable instanceof Text) {
+                Log.d("Editor", "Inflate text");
+            }
+        }
+
         return view;
     }
 
-    private void addSticker() {
-        ImageView sticker = new ImageView(this.getActivity());
-        sticker.setImageResource(R.drawable.crown);
-        sticker.setOnTouchListener(this);
-        sticker.setOnClickListener(this);
+    private void newSticker() {
+        Sticker sticker = new Sticker(View.generateViewId());
+        sticker.setDrawable(R.drawable.crown);
+
+        this.photo.addPlacable(sticker);
+        this.addStickerView(sticker);
+    }
+
+    private void addStickerView(Sticker sticker) {
+        ImageView view = new ImageView(this.getActivity());
+        view.setId(sticker.id);
+        view.setImageResource(sticker.drawableId);
+        view.setOnTouchListener(this);
+        view.setOnClickListener(this);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(300, 300);
-        params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        params.leftMargin = sticker.locationX;
+        params.topMargin = sticker.locationY;
 
-        sticker.setLayoutParams(params);
-
-        this.canvas.addView(sticker);
+        view.setLayoutParams(params);
+        this.canvas.addView(view);
     }
 
     private void placableSelected(View view) {
-        this.selected = view;
+        this.selected = this.photo.getPlacableById(view.getId());
         this.controls.setVisibility(View.VISIBLE);
     }
 
@@ -78,7 +106,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
                 Log.d("Editor", "Add text");
                 return;
             case R.id.add_sticker:
-                this.addSticker();
+                this.newSticker();
                 return;
         }
 
@@ -93,7 +121,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     @Override
     public boolean onTouch(View view, MotionEvent event) {
-        if (this.selected != view) {
+        if (this.selected != this.photo.getPlacableById(view.getId())) {
             return false;
         }
 
@@ -109,13 +137,12 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
                 break;
             case MotionEvent.ACTION_MOVE:
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
-
-                params.removeRule(RelativeLayout.CENTER_IN_PARENT);
-
                 params.leftMargin = X - _xDelta;
                 params.topMargin = Y - _yDelta;
 
                 view.setLayoutParams(params);
+                this.selected.setLocation(params.leftMargin, params.topMargin);
+
                 break;
         }
 

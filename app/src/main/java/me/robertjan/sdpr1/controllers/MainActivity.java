@@ -14,7 +14,7 @@ import me.robertjan.sdpr1.models.Photo;
 
 public class MainActivity extends AppCompatActivity {
 
-    public Photo photo;
+    private Photo photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,5 +33,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         this.photo = new Photo();
+    }
+
+    public Photo getPhoto() {
+        return this.photo;
     }
 }
