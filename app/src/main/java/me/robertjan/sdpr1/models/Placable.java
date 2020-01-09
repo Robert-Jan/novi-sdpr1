@@ -4,7 +4,11 @@ public abstract class Placable {
 
     public Integer id;
 
-    public Integer zoom;
+    public Integer zoom = 100;
+
+    public Integer width = 300;
+
+    public Integer height = 300;
 
     public Integer locationX = 0;
 

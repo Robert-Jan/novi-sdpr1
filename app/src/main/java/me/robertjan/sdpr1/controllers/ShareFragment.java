@@ -1,4 +1,4 @@
-package me.robertjan.sdpr1.views;
+package me.robertjan.sdpr1.controllers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
 import me.robertjan.sdpr1.R;
-import me.robertjan.sdpr1.controllers.MainActivity;
 import me.robertjan.sdpr1.models.Photo;
 
 public class ShareFragment extends Fragment {

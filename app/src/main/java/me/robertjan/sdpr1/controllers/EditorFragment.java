@@ -1,4 +1,4 @@
-package me.robertjan.sdpr1.views;
+package me.robertjan.sdpr1.controllers;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
 import me.robertjan.sdpr1.R;
-import me.robertjan.sdpr1.controllers.MainActivity;
 import me.robertjan.sdpr1.models.Photo;
 import me.robertjan.sdpr1.models.Placable;
 import me.robertjan.sdpr1.models.Sticker;
@@ -49,6 +49,12 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         SeekBar seekBar = view.findViewById(R.id.zoom);
         seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
 
+        ImageButton deleteButton = view.findViewById(R.id.delete);
+        deleteButton.setOnClickListener(this);
+
+        ImageButton nextButton = view.findViewById(R.id.next);
+        nextButton.setOnClickListener(this);
+
         Button addTextButton = view.findViewById(R.id.add_text);
         addTextButton.setOnClickListener(this);
 
@@ -68,7 +74,6 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     private void newSticker() {
         Sticker sticker = new Sticker(View.generateViewId());
-        sticker.setDrawable(R.drawable.crown);
 
         this.photo.addPlacable(sticker);
         this.addStickerView(sticker);
@@ -77,11 +82,11 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
     private void addStickerView(Sticker sticker) {
         ImageView view = new ImageView(this.getActivity());
         view.setId(sticker.id);
-        view.setImageResource(sticker.drawableId);
+        view.setImageResource(sticker.getSticker());
         view.setOnTouchListener(this);
         view.setOnClickListener(this);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(300, 300);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(sticker.width, sticker.height);
         params.leftMargin = sticker.locationX;
         params.topMargin = sticker.locationY;
 
@@ -89,12 +94,26 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.canvas.addView(view);
     }
 
+    private void nextSticker() {
+        Sticker sticker = (Sticker) this.selected;
+        sticker.nextSticker();
+
+        ImageView view = this.canvas.findViewById(sticker.id);
+        view.setImageResource(sticker.getSticker());
+    }
+
+    private void removePlacable() {
+        this.photo.removePlacable(this.selected);
+        this.canvas.removeView(this.canvas.findViewById(this.selected.id));
+        this.placableDeselected();
+    }
+
     private void placableSelected(View view) {
         this.selected = this.photo.getPlacableById(view.getId());
         this.controls.setVisibility(View.VISIBLE);
     }
 
-    private void placableDeselected(View view) {
+    private void placableDeselected() {
         this.selected = null;
         this.controls.setVisibility(View.INVISIBLE);
     }
@@ -108,13 +127,19 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
             case R.id.add_sticker:
                 this.newSticker();
                 return;
+            case R.id.next:
+                this.nextSticker();
+                return;
+            case R.id.delete:
+                this.removePlacable();
+                return;
         }
 
         // Placable listener
         if (((View) view.getParent()).getId() == R.id.canvas) {
             this.placableSelected(view);
         } else {
-            this.placableDeselected(view);
+            this.placableDeselected();
         }
 
     }

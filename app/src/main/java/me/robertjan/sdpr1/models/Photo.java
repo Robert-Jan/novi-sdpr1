@@ -18,6 +18,10 @@ public class Photo {
         this.placables.add(placable);
     }
 
+    public void removePlacable(Placable placable) {
+        this.placables.remove(placable);
+    }
+
     public Placable getPlacableById(Integer id) {
         for (Placable placable : this.placables) {
             if (placable.id.equals(id)) {
