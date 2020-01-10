@@ -9,32 +9,30 @@ public class Sticker extends Placable {
     private Drawable currentDrawable;
 
     private enum Drawable {
-        SUNGLASS    (R.drawable.sunglass),
-        CROWN       (R.drawable.crown),
-        STAR        (R.drawable.star),
-        HAIR        (R.drawable.hair),
-        HAT         (R.drawable.hat);
+        SUNGLASS    (R.drawable.sunglass, 300, 150),
+        CROWN       (R.drawable.crown, 300, 240),
+        STAR        (R.drawable.star, 300, 290),
+        HAIR        (R.drawable.hair, 300, 275),
+        HAT         (R.drawable.hat, 300, 160);
 
-        private final int id;
+        public final int id;
+        public final int width;
+        public final int height;
 
-        private static Drawable[] values = values();
-
-        Drawable(int id) {
+        Drawable(int id, int width, int height) {
             this.id = id;
-        }
-
-        public int getResource() {
-            return this.id;
+            this.width = width;
+            this.height = height;
         }
     }
 
     public Sticker(Integer id) {
-        this.id = id;
+        super(id);
         this.randomSticker();
     }
 
     public int getSticker() {
-        return this.currentDrawable.getResource();
+        return this.currentDrawable.id;
     }
 
     public void nextSticker() {
@@ -44,11 +42,19 @@ public class Sticker extends Placable {
         nextIndex %= drawables.length;
 
         this.currentDrawable = drawables[nextIndex];
+        this.setDimensions();
     }
 
     private void randomSticker() {
         Drawable[] drawables = Drawable.values();
         int index = (new Random()).nextInt(drawables.length);
+
         this.currentDrawable = drawables[index];
+        this.setDimensions();
+    }
+
+    private void setDimensions() {
+        this.width = this.currentDrawable.width;
+        this.height = this.currentDrawable.height;
     }
 }

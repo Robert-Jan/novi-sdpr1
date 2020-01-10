@@ -6,16 +6,28 @@ public abstract class Placable {
 
     public Integer zoom = 100;
 
-    public Integer width = 300;
+    protected Integer width;
 
-    public Integer height = 300;
+    protected Integer height;
 
     public Integer locationX = 0;
 
     public Integer locationY = 0;
 
+    Placable(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getWidth() {
+        return (this.width / 100) * this.zoom;
+    }
+
+    public Integer getHeight() {
+        return (this.height / 100) * this.zoom;
+    }
+
     public void setZoom(Integer zoom) {
-        this.zoom = zoom;
+        this.zoom = zoom >= 50 ? zoom : 50;
     }
 
     public void setLocation(Integer x, Integer y) {

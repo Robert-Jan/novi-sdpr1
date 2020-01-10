@@ -34,6 +34,8 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     private LinearLayout controls;
 
+    private SeekBar zoom;
+
     private int _xDelta, _yDelta;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,8 +48,8 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.controls = view.findViewById(R.id.controls);
         this.controls.setVisibility(View.INVISIBLE);
 
-        SeekBar seekBar = view.findViewById(R.id.zoom);
-        seekBar.setOnSeekBarChangeListener(seekBarChangeListener);
+        this.zoom = view.findViewById(R.id.zoom);
+        this.zoom.setOnSeekBarChangeListener(seekBarChangeListener);
 
         ImageButton deleteButton = view.findViewById(R.id.delete);
         deleteButton.setOnClickListener(this);
@@ -86,7 +88,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         view.setOnTouchListener(this);
         view.setOnClickListener(this);
 
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(sticker.width, sticker.height);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(sticker.getWidth(), sticker.getHeight());
         params.leftMargin = sticker.locationX;
         params.topMargin = sticker.locationY;
 
@@ -100,6 +102,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
         ImageView view = this.canvas.findViewById(sticker.id);
         view.setImageResource(sticker.getSticker());
+        this.setDimensions();
     }
 
     private void removePlacable() {
@@ -110,12 +113,22 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     private void placableSelected(View view) {
         this.selected = this.photo.getPlacableById(view.getId());
+        this.zoom.setProgress(this.selected.zoom);
         this.controls.setVisibility(View.VISIBLE);
     }
 
     private void placableDeselected() {
         this.selected = null;
         this.controls.setVisibility(View.INVISIBLE);
+    }
+
+    private void setDimensions() {
+        ImageView view = this.canvas.findViewById(selected.id);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+        params.width = selected.getWidth();
+        params.height = selected.getHeight();
+
+        view.setLayoutParams(params);
     }
 
     public void onClick(View view) {
@@ -177,7 +190,8 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
     private SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+            selected.setZoom(progress);
+            setDimensions();
         }
 
         @Override public void onStartTrackingTouch(SeekBar seekBar) {}

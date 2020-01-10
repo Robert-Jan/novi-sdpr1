@@ -4,6 +4,10 @@ public class Text extends Placable {
 
     public String value;
 
+    public Text(Integer id) {
+        super(id);
+    }
+
     public void setValue(String name) {
 
     }
