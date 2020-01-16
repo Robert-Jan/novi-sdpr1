@@ -1,7 +1,9 @@
 package me.robertjan.sdpr1.controllers;
 
+import android.app.ActionBar;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -34,6 +37,8 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     private LinearLayout controls;
 
+    private ImageButton nextButton;
+
     private SeekBar zoom;
 
     private int _xDelta, _yDelta;
@@ -51,11 +56,11 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.zoom = view.findViewById(R.id.zoom);
         this.zoom.setOnSeekBarChangeListener(seekBarChangeListener);
 
+        this.nextButton = view.findViewById(R.id.next);
+        this.nextButton.setOnClickListener(this);
+
         ImageButton deleteButton = view.findViewById(R.id.delete);
         deleteButton.setOnClickListener(this);
-
-        ImageButton nextButton = view.findViewById(R.id.next);
-        nextButton.setOnClickListener(this);
 
         Button addTextButton = view.findViewById(R.id.add_text);
         addTextButton.setOnClickListener(this);
@@ -67,7 +72,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
             if (placable instanceof Sticker) {
                 this.addStickerView((Sticker) placable);
             } else if (placable instanceof Text) {
-                Log.d("Editor", "Inflate text");
+                this.addTextView((Text) placable);
             }
         }
 
@@ -79,6 +84,13 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
         this.photo.addPlacable(sticker);
         this.addStickerView(sticker);
+    }
+
+    private void newText() {
+        Text text = new Text(View.generateViewId());
+
+        this.photo.addPlacable(text);
+        this.addTextView(text);
     }
 
     private void addStickerView(Sticker sticker) {
@@ -96,13 +108,44 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.canvas.addView(view);
     }
 
+    private void addTextView(Text text) {
+        TextView view = new TextView(this.getActivity());
+        view.setId(text.id);
+        view.setText(text.getValue());
+        view.setOnTouchListener(this);
+        view.setOnClickListener(this);
+
+        view.setTextColor(getResources().getColor(text.getColor()));
+        view.setTypeface(view.getTypeface(), Typeface.BOLD);
+        view.setGravity(Gravity.CENTER);
+        view.setTextSize(text.getSize());
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        params.leftMargin = text.locationX;
+        params.topMargin = text.locationY;
+
+        view.setLayoutParams(params);
+        this.canvas.addView(view);
+    }
+
     private void nextSticker() {
         Sticker sticker = (Sticker) this.selected;
         sticker.nextSticker();
 
         ImageView view = this.canvas.findViewById(sticker.id);
         view.setImageResource(sticker.getSticker());
-        this.setDimensions();
+        this.setImageDimensions();
+    }
+
+    private void nextColor() {
+        Text text = (Text) this.selected;
+        text.nextColor();
+
+        TextView view = this.canvas.findViewById(text.id);
+        view.setTextColor(getResources().getColor(text.getColor()));
     }
 
     private void removePlacable() {
@@ -122,8 +165,9 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.controls.setVisibility(View.INVISIBLE);
     }
 
-    private void setDimensions() {
+    private void setImageDimensions() {
         ImageView view = this.canvas.findViewById(selected.id);
+
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
         params.width = selected.getWidth();
         params.height = selected.getHeight();
@@ -131,17 +175,26 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         view.setLayoutParams(params);
     }
 
+    private void setTextSize() {
+        TextView view = this.canvas.findViewById(selected.id);
+        view.setTextSize(this.selected.getSize());
+    }
+
     public void onClick(View view) {
         // Button listeners
         switch (view.getId()) {
             case R.id.add_text:
-                Log.d("Editor", "Add text");
+                this.newText();
                 return;
             case R.id.add_sticker:
                 this.newSticker();
                 return;
             case R.id.next:
-                this.nextSticker();
+                if (this.selected instanceof Sticker) {
+                    this.nextSticker();
+                } else if (this.selected instanceof Text) {
+                    this.nextColor();
+                }
                 return;
             case R.id.delete:
                 this.removePlacable();
@@ -191,7 +244,12 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             selected.setZoom(progress);
-            setDimensions();
+
+            if (selected instanceof Sticker) {
+                setImageDimensions();
+            } else if (selected instanceof Text) {
+                setTextSize();
+            }
         }
 
         @Override public void onStartTrackingTouch(SeekBar seekBar) {}

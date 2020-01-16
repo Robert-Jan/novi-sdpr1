@@ -35,6 +35,14 @@ public class Sticker extends Placable {
         return this.currentDrawable.id;
     }
 
+    public Integer getWidth() {
+        return (this.width / 100) * this.zoom;
+    }
+
+    public Integer getHeight() {
+        return (this.height / 100) * this.zoom;
+    }
+
     public void nextSticker() {
         int index = this.currentDrawable.ordinal();
         int nextIndex = index + 1;

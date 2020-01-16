@@ -19,11 +19,15 @@ public abstract class Placable {
     }
 
     public Integer getWidth() {
-        return (this.width / 100) * this.zoom;
+        return this.width;
     }
 
     public Integer getHeight() {
-        return (this.height / 100) * this.zoom;
+        return this.height;
+    }
+
+    public float getSize() {
+        return 24;
     }
 
     public void setZoom(Integer zoom) {
