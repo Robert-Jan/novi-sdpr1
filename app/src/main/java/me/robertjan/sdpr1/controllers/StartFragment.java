@@ -2,11 +2,11 @@ package me.robertjan.sdpr1.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,6 +29,8 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     private Photo photo;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
+
+    private static final int REQUEST_PICK_PHOTO = 2;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
@@ -42,13 +45,42 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+
+        startActivityForResult(intent, REQUEST_PICK_PHOTO);
+    }
+
+    private void saveToStorage(Uri uri) throws IOException {
+        File photo = null;
+        Bitmap bitmap = null;
+
+        try {
+            photo = this.createImageFile();
+            bitmap = MediaStore.Images.Media.getBitmap(
+                    Objects.requireNonNull(getActivity()).getContentResolver(),
+                    uri
+            );
+        } catch (IOException error) {
+            error.printStackTrace();
+        }
+
+        if (photo != null && bitmap != null) {
+            FileOutputStream stream = new FileOutputStream(photo);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            stream.flush();
+            stream.close();
+        }
+    }
+
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (intent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
 
             File photo = null;
 
-            try {photo = createImageFile(); } catch (IOException error) {
+            try {photo = this.createImageFile(); } catch (IOException error) {
                 error.printStackTrace();
             }
 
@@ -77,7 +109,16 @@ public class StartFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            ((MainActivity) Objects.requireNonNull(getActivity())).navigateTo(R.id.navigation_editor);
+        }
+
+        if (requestCode == REQUEST_PICK_PHOTO && resultCode == Activity.RESULT_OK) {
+            try {
+                this.saveToStorage(data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             ((MainActivity) Objects.requireNonNull(getActivity())).navigateTo(R.id.navigation_editor);
         }
     }
@@ -89,7 +130,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
                 this.openCamera();
                 break;
             case R.id.button_gallery:
-                Log.d("Start", "Open gallery");
+                this.openGallery();
                 break;
         }
     }

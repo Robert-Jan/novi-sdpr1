@@ -1,6 +1,5 @@
 package me.robertjan.sdpr1.controllers;
 
-import android.app.ActionBar;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -88,20 +87,22 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
     }
 
     private void setBackground(ImageView background) {
-        File file = new File(this.photo.background);
-        Bitmap bitmap = null;
+        if (this.photo.background != null) {
+            File file = new File(this.photo.background);
+            Bitmap bitmap = null;
 
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(
-                    Objects.requireNonNull(getActivity()).getApplicationContext().getContentResolver(),
-                    Uri.fromFile(file)
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(
+                        Objects.requireNonNull(getActivity()).getApplicationContext().getContentResolver(),
+                        Uri.fromFile(file)
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        if (bitmap != null) {
-            background.setImageBitmap(bitmap);
+            if (bitmap != null) {
+                background.setImageBitmap(bitmap);
+            }
         }
     }
 
