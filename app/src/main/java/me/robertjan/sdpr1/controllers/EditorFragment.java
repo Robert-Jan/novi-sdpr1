@@ -1,8 +1,11 @@
 package me.robertjan.sdpr1.controllers;
 
 import android.app.ActionBar;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import me.robertjan.sdpr1.R;
@@ -68,6 +73,9 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         Button addStickerButton = view.findViewById(R.id.add_sticker);
         addStickerButton.setOnClickListener(this);
 
+        ImageView background = view.findViewById(R.id.background);
+        this.setBackground(background);
+
         for (Placable placable : this.photo.placables) {
             if (placable instanceof Sticker) {
                 this.addStickerView((Sticker) placable);
@@ -77,6 +85,24 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         }
 
         return view;
+    }
+
+    private void setBackground(ImageView background) {
+        File file = new File(this.photo.background);
+        Bitmap bitmap = null;
+
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(
+                    Objects.requireNonNull(getActivity()).getApplicationContext().getContentResolver(),
+                    Uri.fromFile(file)
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (bitmap != null) {
+            background.setImageBitmap(bitmap);
+        }
     }
 
     private void newSticker() {

@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Photo photo;
 
+    private NavController navController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,14 +30,18 @@ public class MainActivity extends AppCompatActivity {
             R.id.navigation_share
         ).build();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
+        this.navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, this.navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, this.navController);
 
         this.photo = new Photo();
     }
 
     public Photo getPhoto() {
         return this.photo;
+    }
+
+    public void navigateTo(int resId) {
+        this.navController.navigate(resId);
     }
 }

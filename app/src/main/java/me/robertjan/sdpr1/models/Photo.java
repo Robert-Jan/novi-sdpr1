@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public class Photo {
 
-    public Integer id;
-
-    public String path;
+    public String background;
 
     public ArrayList<Placable> placables;
 
