@@ -85,13 +85,13 @@ public class StartFragment extends Fragment implements View.OnClickListener {
             }
 
             if (photo != null) {
-                Uri photoURI = FileProvider.getUriForFile(
+                Uri uri = FileProvider.getUriForFile(
                         Objects.requireNonNull(getActivity()).getApplicationContext(),
                         "me.robertjan.sdpr1.fileprovider",
                         photo
                 );
 
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                 startActivityForResult(intent, REQUEST_TAKE_PHOTO);
             }
         }
@@ -99,7 +99,7 @@ public class StartFragment extends Fragment implements View.OnClickListener {
 
     private File createImageFile() throws IOException {
         File storageDir = Objects.requireNonNull(getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile("photo", ".jpg", storageDir);
+        File image = File.createTempFile("input", ".jpg", storageDir);
         this.photo.background = image.getAbsolutePath();
 
         return image;

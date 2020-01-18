@@ -1,11 +1,10 @@
 package me.robertjan.sdpr1.controllers;
 
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import me.robertjan.sdpr1.R;
-import me.robertjan.sdpr1.models.Photo;
 import me.robertjan.sdpr1.services.ImageAdapter;
 
 public class ShareFragment extends Fragment {
@@ -51,7 +50,11 @@ public class ShareFragment extends Fragment {
         ArrayList<String> list = new ArrayList<>();
 
         if (file != null && file.isDirectory()) {
-            File[] files = file.listFiles();
+            File[] files = file.listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return name.startsWith("output");
+                }
+            });
 
             if (files != null) {
                 for (File value : files) {
@@ -65,6 +68,9 @@ public class ShareFragment extends Fragment {
     }
 
     private void shareImage(String uri) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("image/jpg");
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(uri)));

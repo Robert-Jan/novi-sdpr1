@@ -7,4 +7,5 @@
     <string name="start_gallery">Open Gallery</string>
     <string name="add_text">Voeg tekst toe</string>
     <string name="add_sticker">Voeg sticker toe</string>
+    <string name="save">Foto opslaan</string>
 </resources>

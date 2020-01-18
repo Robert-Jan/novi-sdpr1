@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -41,7 +43,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     private LinearLayout controls;
 
-    private ImageButton nextButton;
+    private Button saveButton;
 
     private SeekBar zoom;
 
@@ -60,8 +62,8 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.zoom = view.findViewById(R.id.zoom);
         this.zoom.setOnSeekBarChangeListener(seekBarChangeListener);
 
-        this.nextButton = view.findViewById(R.id.next);
-        this.nextButton.setOnClickListener(this);
+        ImageButton nextButton = view.findViewById(R.id.next);
+        nextButton.setOnClickListener(this);
 
         ImageButton deleteButton = view.findViewById(R.id.delete);
         deleteButton.setOnClickListener(this);
@@ -71,6 +73,9 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
         Button addStickerButton = view.findViewById(R.id.add_sticker);
         addStickerButton.setOnClickListener(this);
+
+        this.saveButton = view.findViewById(R.id.save);
+        this.saveButton.setOnClickListener(this);
 
         ImageView background = view.findViewById(R.id.background);
         this.setBackground(background);
@@ -185,11 +190,13 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         this.selected = this.photo.getPlacableById(view.getId());
         this.zoom.setProgress(this.selected.zoom);
         this.controls.setVisibility(View.VISIBLE);
+        this.saveButton.setVisibility(View.INVISIBLE);
     }
 
     private void placableDeselected() {
         this.selected = null;
         this.controls.setVisibility(View.INVISIBLE);
+        this.saveButton.setVisibility(View.VISIBLE);
     }
 
     private void setImageDimensions() {
@@ -205,6 +212,28 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
     private void setTextSize() {
         TextView view = this.canvas.findViewById(selected.id);
         view.setTextSize(this.selected.getSize());
+    }
+
+    private void savePhoto() {
+        this.canvas.setDrawingCacheEnabled(true);
+        this.canvas.buildDrawingCache();
+
+        Bitmap bitmap = this.canvas.getDrawingCache();
+
+        try {
+            File storageDir = Objects.requireNonNull(getActivity()).getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File image = File.createTempFile("output", ".jpg", storageDir);
+
+            FileOutputStream stream = new FileOutputStream(image);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+            stream.flush();
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.canvas.setDrawingCacheEnabled(false);
     }
 
     public void onClick(View view) {
@@ -225,6 +254,10 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
                 return;
             case R.id.delete:
                 this.removePlacable();
+                return;
+            case R.id.save:
+                this.savePhoto();
+                ((MainActivity) Objects.requireNonNull(getActivity())).navigateTo(R.id.navigation_share);
                 return;
         }
 
