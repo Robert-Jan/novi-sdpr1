@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import me.robertjan.sdpr1.R;
-import me.robertjan.sdpr1.services.ImageAdapter;
+import me.robertjan.sdpr1.support.ImageAdapter;
 
 public class ShareFragment extends Fragment {
 

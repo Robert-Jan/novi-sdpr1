@@ -110,15 +110,16 @@ public class StartFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            this.photo.clearAllPlacables();
             ((MainActivity) Objects.requireNonNull(getActivity())).navigateTo(R.id.navigation_editor);
         }
 
         if (requestCode == REQUEST_PICK_PHOTO && resultCode == Activity.RESULT_OK) {
-            try {
-                this.saveToStorage(data.getData());
-            } catch (IOException e) {
+            try { this.saveToStorage(data.getData()); } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            this.photo.clearAllPlacables();
             ((MainActivity) Objects.requireNonNull(getActivity())).navigateTo(R.id.navigation_editor);
         }
     }

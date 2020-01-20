@@ -8,24 +8,6 @@ public class Sticker extends Placable {
 
     private Drawable currentDrawable;
 
-    private enum Drawable {
-        SUNGLASS    (R.drawable.sunglass, 300, 150),
-        CROWN       (R.drawable.crown, 300, 240),
-        STAR        (R.drawable.star, 300, 290),
-        HAIR        (R.drawable.hair, 300, 275),
-        HAT         (R.drawable.hat, 300, 160);
-
-        public final int id;
-        public final int width;
-        public final int height;
-
-        Drawable(int id, int width, int height) {
-            this.id = id;
-            this.width = width;
-            this.height = height;
-        }
-    }
-
     public Sticker(Integer id) {
         super(id);
         this.randomSticker();

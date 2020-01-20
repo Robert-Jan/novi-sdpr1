@@ -10,19 +10,6 @@ public class Text extends Placable {
 
     private Color currentColor;
 
-    private enum Color {
-        ORANGE  (R.color.colorPrimary),
-        GREEN   (R.color.green),
-        BLUE    (R.color.blue),
-        RED     (R.color.red);
-
-        public final int id;
-
-        Color(int id) {
-            this.id = id;
-        }
-    }
-
     private String[] months = {
             "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september",
             "oktober", "november", "december"

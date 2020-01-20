@@ -20,6 +20,10 @@ public class Photo {
         this.placables.remove(placable);
     }
 
+    public void clearAllPlacables() {
+        this.placables = new ArrayList<>();
+    }
+
     public Placable getPlacableById(Integer id) {
         for (Placable placable : this.placables) {
             if (placable.id.equals(id)) {

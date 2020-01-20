@@ -1,4 +1,4 @@
-package me.robertjan.sdpr1.services;
+package me.robertjan.sdpr1.support;
 
 import android.content.Context;
 import android.graphics.Bitmap;
