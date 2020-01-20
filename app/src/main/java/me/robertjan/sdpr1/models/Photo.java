@@ -39,8 +39,4 @@ public class Photo {
 
         return null;
     }
-
-    public void saveToGallery() {
-
-    }
 }

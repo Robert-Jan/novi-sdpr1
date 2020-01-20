@@ -1,5 +1,6 @@
 package me.robertjan.sdpr1.controllers;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -39,6 +40,7 @@ import me.robertjan.sdpr1.models.Text;
  * @author Robert-Jan van der Elst
  * @since 27-12-2019
  */
+@SuppressLint("ClickableViewAccessibility")
 public class EditorFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
     private Photo photo;
