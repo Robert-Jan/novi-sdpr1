@@ -1,5 +1,11 @@
 package me.robertjan.sdpr1.models;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 02-12-2019
+ */
 public abstract class Placable {
 
     public Integer id;

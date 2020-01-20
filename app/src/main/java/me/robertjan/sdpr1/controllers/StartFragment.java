@@ -24,6 +24,12 @@ import java.util.Objects;
 import me.robertjan.sdpr1.R;
 import me.robertjan.sdpr1.models.Photo;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 16-11-2019
+ */
 public class StartFragment extends Fragment implements View.OnClickListener {
 
     private Photo photo;

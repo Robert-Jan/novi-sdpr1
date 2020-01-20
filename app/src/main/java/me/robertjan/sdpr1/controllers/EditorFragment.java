@@ -33,6 +33,12 @@ import me.robertjan.sdpr1.models.Placable;
 import me.robertjan.sdpr1.models.Sticker;
 import me.robertjan.sdpr1.models.Text;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 27-12-2019
+ */
 public class EditorFragment extends Fragment implements View.OnClickListener, View.OnTouchListener {
 
     private Photo photo;

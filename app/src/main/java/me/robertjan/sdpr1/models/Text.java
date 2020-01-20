@@ -2,8 +2,12 @@ package me.robertjan.sdpr1.models;
 
 import java.util.Calendar;
 
-import me.robertjan.sdpr1.R;
-
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 02-12-2019
+ */
 public class Text extends Placable {
 
     private String value;

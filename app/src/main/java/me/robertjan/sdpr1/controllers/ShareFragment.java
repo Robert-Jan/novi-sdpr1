@@ -22,6 +22,12 @@ import java.util.Objects;
 import me.robertjan.sdpr1.R;
 import me.robertjan.sdpr1.support.ImageAdapter;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 27-12-2019
+ */
 public class ShareFragment extends Fragment {
 
     private ArrayList<String> images;

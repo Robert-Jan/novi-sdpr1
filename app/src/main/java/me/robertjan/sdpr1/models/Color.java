@@ -2,6 +2,12 @@ package me.robertjan.sdpr1.models;
 
 import me.robertjan.sdpr1.R;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 20-01-2020
+ */
 enum Color {
     ORANGE  (R.color.colorPrimary),
     GREEN   (R.color.green),

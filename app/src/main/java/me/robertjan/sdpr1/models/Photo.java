@@ -2,6 +2,12 @@ package me.robertjan.sdpr1.models;
 
 import java.util.ArrayList;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 02-12-2019
+ */
 public class Photo {
 
     public String background;

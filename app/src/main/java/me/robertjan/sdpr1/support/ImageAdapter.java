@@ -12,6 +12,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * Software Development Praktijk 1
+ *
+ * @author Robert-Jan van der Elst
+ * @since 17-01-2020
+ */
 public class ImageAdapter extends BaseAdapter {
 
     private final Context context;
