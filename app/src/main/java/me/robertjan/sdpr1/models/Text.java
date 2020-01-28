@@ -8,7 +8,7 @@ import java.util.Calendar;
  * @author Robert-Jan van der Elst
  * @since 02-12-2019
  */
-public class Text extends Placable {
+public class Text extends Placeable {
 
     private String value;
 

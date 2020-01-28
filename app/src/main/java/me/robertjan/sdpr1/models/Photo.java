@@ -12,28 +12,28 @@ public class Photo {
 
     public String background;
 
-    public ArrayList<Placable> placables;
+    public ArrayList<Placeable> placeables;
 
     public Photo() {
-       this.placables = new ArrayList<>();
+       this.placeables = new ArrayList<>();
     }
 
-    public void addPlacable(Placable placable) {
-        this.placables.add(placable);
+    public void addPlacable(Placeable placeable) {
+        this.placeables.add(placeable);
     }
 
-    public void removePlacable(Placable placable) {
-        this.placables.remove(placable);
+    public void removePlacable(Placeable placeable) {
+        this.placeables.remove(placeable);
     }
 
     public void clearAllPlacables() {
-        this.placables = new ArrayList<>();
+        this.placeables = new ArrayList<>();
     }
 
-    public Placable getPlacableById(Integer id) {
-        for (Placable placable : this.placables) {
-            if (placable.id.equals(id)) {
-                return placable;
+    public Placeable getPlacableById(Integer id) {
+        for (Placeable placeable : this.placeables) {
+            if (placeable.id.equals(id)) {
+                return placeable;
             }
         }
 

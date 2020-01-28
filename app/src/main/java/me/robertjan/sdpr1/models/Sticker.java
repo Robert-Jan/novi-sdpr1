@@ -8,7 +8,7 @@ import java.util.Random;
  * @author Robert-Jan van der Elst
  * @since 02-12-2019
  */
-public class Sticker extends Placable {
+public class Sticker extends Placeable {
 
     private Drawable currentDrawable;
 

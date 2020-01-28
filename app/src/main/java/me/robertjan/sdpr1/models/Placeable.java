@@ -6,7 +6,7 @@ package me.robertjan.sdpr1.models;
  * @author Robert-Jan van der Elst
  * @since 02-12-2019
  */
-public abstract class Placable {
+public abstract class Placeable {
 
     public Integer id;
 
@@ -20,7 +20,7 @@ public abstract class Placable {
 
     public Integer locationY = 0;
 
-    Placable(Integer id) {
+    Placeable(Integer id) {
         this.id = id;
     }
 

@@ -30,7 +30,7 @@ import java.util.Objects;
 
 import me.robertjan.sdpr1.R;
 import me.robertjan.sdpr1.models.Photo;
-import me.robertjan.sdpr1.models.Placable;
+import me.robertjan.sdpr1.models.Placeable;
 import me.robertjan.sdpr1.models.Sticker;
 import me.robertjan.sdpr1.models.Text;
 
@@ -45,7 +45,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
 
     private Photo photo;
 
-    private Placable selected;
+    private Placeable selected;
 
     private RelativeLayout canvas;
 
@@ -88,11 +88,11 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
         ImageView background = view.findViewById(R.id.background);
         this.setBackground(background);
 
-        for (Placable placable : this.photo.placables) {
-            if (placable instanceof Sticker) {
-                this.addStickerView((Sticker) placable);
-            } else if (placable instanceof Text) {
-                this.addTextView((Text) placable);
+        for (Placeable placeable : this.photo.placeables) {
+            if (placeable instanceof Sticker) {
+                this.addStickerView((Sticker) placeable);
+            } else if (placeable instanceof Text) {
+                this.addTextView((Text) placeable);
             }
         }
 
@@ -269,7 +269,7 @@ public class EditorFragment extends Fragment implements View.OnClickListener, Vi
                 return;
         }
 
-        // Placable listener
+        // Placeable listener
         if (((View) view.getParent()).getId() == R.id.canvas) {
             this.placableSelected(view);
         } else {
